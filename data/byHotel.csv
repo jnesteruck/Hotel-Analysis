@@ -1,0 +1,3 @@
+hotel,reservations,stays,cancellations,cancellation_rate,parking_required,special_requests,transients,transient_parties,contracts,group,adults,children,babies
+City Hotel,79330,46228,33102,0.41726963317786464,1933,43387,59404,17333,2300,79037,146838,7248.0,392
+Resort Hotel,40060,28938,11122,0.27763354967548676,5531,24828,30209,7791,1776,39776,74798,5155.0,557
