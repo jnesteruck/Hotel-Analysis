@@ -1,5 +1,5 @@
 from pyspark.sql import SparkSession
-import os, time
+import os, time, subprocess
 
 spark = SparkSession.builder \
         .master("local") \
@@ -9,7 +9,24 @@ spark = SparkSession.builder \
 sc = spark.sparkContext
 sc.setLogLevel("WARN")
 
+def exists(file: str) -> bool:
+    proc = subprocess.Popen(['hadoop', 'fs', '-test', '-e', file])
+    proc.communicate()
+    if proc.returncode != 0:
+        return False
+    return True
+
 path = "/home/jnest/"
+
+os.system("clear")
+print("Searching for hotel_bookings.csv in HDFS...")
+time.sleep(2)
+
+if not exists(path + "hotel_bookings.csv"):
+    print("Couldn't find hotel_bookings.csv in HDFS location. Copying from local system...")
+    os.system(f'hdfs dfs -put archive/hotel_bookings.csv {path}')
+    if exists(path + "hotel_bookings.csv"):
+        print("Successfully copied hotel_bookings.csv to HDFS...", end="")
 
 hotel_bookings = spark.read \
     .option("header", True) \
