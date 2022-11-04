@@ -18,21 +18,25 @@ def exists(file: str) -> bool:
 
 path = "/home/jnest/"
 
+# Search for file in HDFS
 os.system("clear")
 print("Searching for hotel_bookings.csv in HDFS...")
 time.sleep(2)
 
+# Copy file to HDFS if not found
 if not exists(path + "hotel_bookings.csv"):
     print("Couldn't find hotel_bookings.csv in HDFS location. Copying from local system...")
     os.system(f'hdfs dfs -put archive/hotel_bookings.csv {path}')
     if exists(path + "hotel_bookings.csv"):
         print("Successfully copied hotel_bookings.csv to HDFS...", end="")
 
+# Load DataFrame from file
 hotel_bookings = spark.read \
     .option("header", True) \
     .option("inferSchema", True) \
     .csv(path + "hotel_bookings.csv")
 
+# Create temp view for SparkSQL queries
 hotel_bookings.createOrReplaceTempView("hotel_bookings")
 
 no = {'n', 'no'}
@@ -157,5 +161,9 @@ while True:
         break
     else:
         continue
+
+# Remove file to conserve space
+print("Removing hotel-bookings.csv from HDFS to save space...")
+os.system(f'hdfs dfs -rm {path}hotel_bookings.csv')
         
 spark.stop()
