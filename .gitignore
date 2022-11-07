@@ -3,3 +3,6 @@ file.txt
 
 # Ignore original .csv file
 archive
+
+# Ignore queries.txt
+queries.txt

@@ -162,8 +162,20 @@ while True:
     else:
         continue
 
-# Remove file to conserve space
-print("Removing hotel-bookings.csv from HDFS to save space...")
-os.system(f'hdfs dfs -rm {path}hotel_bookings.csv')
+# Ask to remove file to conserve space
+while True:
+    os.system("clear")
+    print("Remove hotel-bookings.csv from HDFS to save space? (Y/N)")
+    choice = input("\n>>> ")
+    if choice in yes:
+        print("Removing hotel-bookings.csv from HDFS...")
+        os.system(f'hdfs dfs -rm {path}hotel_bookings.csv')
+        print("Removed file from HDFS.")
+        break
+    elif choice in no:
+        break
+    else:
+        print("Please select a valid option.")
+        time.sleep(2)
         
 spark.stop()
